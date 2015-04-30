@@ -83,6 +83,7 @@ public class Crawler extends WebCrawler{
 				WriteIntoFile.WriteText(text);
 				WriteIntoFile.WriteText("#<end>#"+docID+"\n");
 				WriteIntoFile.WriteLength(Integer.toString(length)+"        "+url);
+				WriteIntoFile.WritePage(Integer.toString(docID), text);
 			}catch(IOException e2){
 				System.out.println("writing file error!");
 				e2.printStackTrace();
@@ -91,7 +92,7 @@ public class Crawler extends WebCrawler{
 				myCrawlStat.setLength(length);
 				myCrawlStat.setMaxLengthURL(url);
 			}
-			List<WebURL> links = new ArrayList(); 
+			List<WebURL> links = new ArrayList<WebURL>(); 
 			links.addAll(parseData.getOutgoingUrls());
 			myCrawlStat.incTotalLinks(links.size());
 			try {

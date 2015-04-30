@@ -54,5 +54,5 @@ local.properties
 hs_err_pid*
 
 
-src/CrawlOut
-src/crawler
+/CrawlOut
+/crawler

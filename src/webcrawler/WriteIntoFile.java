@@ -138,48 +138,4 @@ public class WriteIntoFile {
 
 		}
 	}
-	public static void WriteIndexOne(String indexOne) throws IOException{
-		try{
-			StringBuffer stb = new StringBuffer("./Index");
-
-			File file = new File(stb.toString());
-			if(!file.exists()){
-				file.mkdirs();
-				System.out.println("new folder created!");
-			}
-			stb.append("/Result.txt");
-			String filePath = stb.toString();
-			FileWriter fileWriter = new FileWriter(filePath, true);
-			fileWriter.write(indexOne);
-			fileWriter.write("\r");
-			fileWriter.close();
-
-		}catch(IOException e){
-			System.out.println("writing file error!");
-			e.printStackTrace();
-
-		}
-	}
-	public static void WriteIndexTwo(String indexTwo) throws IOException{
-		try{
-			StringBuffer stb = new StringBuffer("./Index");
-
-			File file = new File(stb.toString());
-			if(!file.exists()){
-				file.mkdirs();
-				System.out.println("new folder created!");
-			}
-			stb.append("/Result.txt");
-			String filePath = stb.toString();
-			FileWriter fileWriter = new FileWriter(filePath, true);
-			fileWriter.write(indexTwo);
-			fileWriter.write("\r");
-			fileWriter.close();
-
-		}catch(IOException e){
-			System.out.println("writing file error!");
-			e.printStackTrace();
-
-		}
-	}
 }
