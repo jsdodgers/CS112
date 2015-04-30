@@ -12,7 +12,7 @@ import edu.uci.ics.crawler4j.robotstxt.RobotstxtConfig;
 import edu.uci.ics.crawler4j.robotstxt.RobotstxtServer;
 
 /**
- * @author xuke
+ * 
  *
  */
 public class Controller {
@@ -50,7 +50,7 @@ public class Controller {
 		 * You can set the maximum crawl depth here. The default value is -1 for
 		 * unlimited depth
 		 */
-		config.setMaxDepthOfCrawling(10);
+		config.setMaxDepthOfCrawling(-1);
 
 		/*
 		 * You can set the maximum number of pages to crawl. The default value
@@ -86,7 +86,7 @@ public class Controller {
 
 		controller.addSeed("http://www.ics.uci.edu/");
 		double start=System.currentTimeMillis();
-		controller.start(XTCrawler.class, numberOfCrawlers);
+		controller.start(Crawler.class, numberOfCrawlers);
 		double end=System.currentTimeMillis();
 		double runningTime=(end-start-30000.0)/1000.0;
 

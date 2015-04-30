@@ -74,7 +74,6 @@ public class WriteIntoFile {
 	}
 	public static void WriteText(String text) throws IOException{
 		try{
-			System.out.println("WriteTEXT was CALLED!");
 			StringBuffer stb = new StringBuffer("./CrawlOut/text");
 
 			File file = new File(stb.toString());
