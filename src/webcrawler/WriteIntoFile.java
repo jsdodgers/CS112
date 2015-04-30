@@ -3,6 +3,7 @@ package webcrawler;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import edu.uci.ics.crawler4j.url.WebURL;
 
 
 public class WriteIntoFile {
@@ -85,6 +86,28 @@ public class WriteIntoFile {
 			String filePath = stb.toString();
 			FileWriter fileWriter = new FileWriter(filePath, true);
 			fileWriter.write(text);
+			fileWriter.write("\r");
+			fileWriter.close();
+
+		}catch(IOException e){
+			System.out.println("writing file error!");
+			e.printStackTrace();
+
+		}
+	}
+	public static void WriteText(WebURL text) throws IOException{
+		try{
+			StringBuffer stb = new StringBuffer("./CrawlOut/text");
+
+			File file = new File(stb.toString());
+			if(!file.exists()){
+				file.mkdirs();
+				System.out.println("new folder created!");
+			}
+			stb.append("/Text.txt");
+			String filePath = stb.toString();
+			FileWriter fileWriter = new FileWriter(filePath, true);
+			fileWriter.write(text.toString());
 			fileWriter.write("\r");
 			fileWriter.close();
 

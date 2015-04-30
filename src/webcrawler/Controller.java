@@ -57,24 +57,27 @@ public class Controller {
 		 * is -1 for unlimited number of pages
 		 */
 		config.setMaxPagesToFetch(-1);
-
+		
 		/*
-		 * Do you need to set a proxy? If so, you can use:
-		 * config.setProxyHost("proxyserver.example.com");
-		 * config.setProxyPort(8080);
-		 * 
-		 * If your proxy also needs authentication:
-		 * config.setProxyUsername(username); config.getProxyPassword(password);
-		 */
-		config.setUserAgentString("UCI Inf141-CS121 crawler 84311865 54689185 38006614");
-		/*
-		 * This config parameter can be used to set your crawl to be resumable
-		 * (meaning that you can resume the crawl from a previously
-		 * interrupted/crashed crawl). Note: if you enable resuming feature and
-		 * want to start a fresh crawl, you need to delete the contents of
-		 * rootFolder manually.
-		 */
-		config.setResumableCrawling(false);
+	     * Do you want crawler4j to crawl also binary data ?
+	     * example: the contents of pdf, or the metadata of images etc
+	     */
+		
+	    config.setIncludeBinaryContentInCrawling(false);
+	    
+	    /*
+	     * This config parameter can be used to set your crawl to be resumable
+	     * (meaning that you can resume the crawl from a previously
+	     * interrupted/crashed crawl). Note: if you enable resuming feature and
+	     * want to start a fresh crawl, you need to delete the contents of
+	     * rootFolder manually.
+	     */
+	    config.setResumableCrawling(false);
+	    
+	    /*
+	     * User Agent
+	     */
+	    config.setUserAgentString("UCI Inf141-CS121 crawler 84311865 54689185 38006614");
 
 		/*
 		 * Instantiate the controller for this crawl.
@@ -87,31 +90,12 @@ public class Controller {
 		controller.addSeed("http://www.ics.uci.edu/");
 		double start=System.currentTimeMillis();
 		controller.start(Crawler.class, numberOfCrawlers);
+		System.out.println("Crawler Finished");
 		double end=System.currentTimeMillis();
-		double runningTime=(end-start-30000.0)/1000.0;
+		double runningTime=(end-start)/1000.0;
 
-		List<Object> crawlersLocalData = controller.getCrawlersLocalData();
-		long totalLinks = 0;
-		long totalTextSize = 0;
-		int totalProcessedPages = 0;
-		int maxLength=0;
-		String maxLengthURL=new String();
-		for (Object localData : crawlersLocalData) {
-			CrawlStat stat = (CrawlStat) localData;
-			totalLinks += stat.getTotalLinks();
-			totalTextSize += stat.getTotalTextSize();
-			totalProcessedPages += stat.getTotalProcessedPages();
-			if(stat.getLength()>maxLength){
-				maxLength=stat.getLength();
-				maxLengthURL=stat.getMaxLengthURL();		
-			}
-		}
+		
 		WriteIntoFile.WriteResult("Aggregated Statistics:");
-		WriteIntoFile.WriteResult("   Processed Pages: " + totalProcessedPages);
-		WriteIntoFile.WriteResult("   Total Text Size: " + totalTextSize);
-		WriteIntoFile.WriteResult("   Total Links found: " + totalLinks);
-		WriteIntoFile.WriteResult("   Max Text Size: " + maxLength);
-		WriteIntoFile.WriteResult("   Max Text Size URL: " + maxLengthURL);
 		WriteIntoFile.WriteResult("   Total Running Time: " + runningTime);
 	}
 }
