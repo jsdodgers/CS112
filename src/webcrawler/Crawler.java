@@ -38,8 +38,14 @@ public class Crawler extends WebCrawler{
 	@Override
 	public boolean shouldVisit(Page referringPage, WebURL url) {
         String href = url.getURL().toLowerCase();
-        return !filters.matcher(href).matches()
-               && href.startsWith("http://www.ics.uci.edu/");
+        return !filters.matcher(href).matches() && href.
+				contains("ics.uci.edu")&&!href.
+				contains("archive.ics.uci.edu")&&!href.
+				contains("calendar.ics.uci.edu")&&!href.
+				contains("sli.ics.uci.edu/classes/2013s-77b?action=download&upname=jester-train.csv")&&!href.
+				contains("http://sli.ics.uci.edu/classes/2013s-77b?action=download&upname=jester-test.csv")&&!href.
+				contains("http://kdd.ics.uci.edu/databases/movies/data/") && !href.
+				contains("?");
     }
 
 	@Override
