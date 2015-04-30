@@ -1,0 +1,5 @@
+Please place your analysis of the runtime complexity of your palindrome algorithm in this file.
+
+I use dynamic programming solution to solve the problem
+I use P[i,j] to represent a substring which begin at ith and end at jth place in the string. We can regard P[i,j] as a string only in the condition that P[i+1,j-1] is a palindrome and s[i]=s[j]. we have two basic situation, P[i,i] always is a palindrome, P[i,i+1] is Palindrome only in the condition that s[i]=s[i+1]. Suppose the length of the string is N,thus we can compute the time complexity by calculate the sum of N+N-1+N-2+…+1
+So the time complexity is O(N2) and the space complexity is O(N2) since we should maintain a N*N table
