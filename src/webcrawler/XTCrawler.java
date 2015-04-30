@@ -26,13 +26,19 @@ public class XTCrawler extends WebCrawler{
 	public boolean shouldVisit(WebURL url) {
 		String href = url.getURL().toLowerCase();
 		return !filters.matcher(href).matches() && href.
-				contains(".ics.uci.edu")&&!href.
+				startsWith("http://www.ics.uci.edu")&&!href.
 				contains("archive.ics.uci.edu")&&!href.
-				contains("calendar.ics.uci.edu")&&!href.
 				contains("sli.ics.uci.edu/classes/2013s-77b?action=download&upname=jester-train.csv")&&!href.
 				contains("http://sli.ics.uci.edu/classes/2013s-77b?action=download&upname=jester-test.csv")&&!href.
 				contains("http://kdd.ics.uci.edu/databases/movies/data/");
 	}
+	
+	@Override
+	public boolean shouldVisit(Page referringPage, WebURL url) {
+        String href = url.getURL().toLowerCase();
+        return !filters.matcher(href).matches()
+               && href.startsWith("http://www.ics.uci.edu/");
+    }
 
 	@Override
 	public void visit(Page page) {
@@ -54,6 +60,7 @@ public class XTCrawler extends WebCrawler{
 		}
 
 		if (page.getParseData() instanceof HtmlParseData) {
+			System.out.println("parsing page!");
 			HtmlParseData parseData = (HtmlParseData) page.getParseData();
 			
 			String text=parseData.getText();
@@ -61,6 +68,7 @@ public class XTCrawler extends WebCrawler{
 			ArrayList<WebURL> outgingURLs=(ArrayList<WebURL>) parseData.getOutgoingUrls();
 			int length=text.length();
 			try{
+				System.out.println("begin try");
 				WriteIntoFile.WriteText("#<start>#"+docID);
 				WriteIntoFile.WriteText("#<url>#"+url);
 				Iterator<WebURL> iter=outgingURLs.iterator();
@@ -88,6 +96,9 @@ public class XTCrawler extends WebCrawler{
 			} catch (UnsupportedEncodingException ignored) {
 				// Do nothing
 			}
+		}
+		else {
+			System.out.println("wanted to write but wasn't html!");
 		}
 	}
 

@@ -85,10 +85,6 @@ public class Controller {
 		CrawlController controller = new CrawlController(config, pageFetcher, robotstxtServer);
 
 		controller.addSeed("http://www.ics.uci.edu/");
-//		controller.addSeed("http://honors.ics.uci.edu/",2);
-//		controller.addSeed("http://sdcl.ics.uci.edu/",3);
-//		controller.addSeed("http://asterix.ics.uci.edu/",4);
-//		controller.addSeed("http://www.ics.uci.edu/~lopes/",5);
 		double start=System.currentTimeMillis();
 		controller.start(XTCrawler.class, numberOfCrawlers);
 		double end=System.currentTimeMillis();

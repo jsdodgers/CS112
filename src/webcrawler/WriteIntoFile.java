@@ -1,15 +1,10 @@
-/**
- * 
- */
 package webcrawler;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-/**
- * @author CHazyhabiT
- *
- */
+
+
 public class WriteIntoFile {
 	public static void WritePage(String id, String content) throws IOException{
 		try{
@@ -30,12 +25,7 @@ public class WriteIntoFile {
 		}catch(IOException e){
 			System.out.println("writing file error!");
 			e.printStackTrace();
-
 		}
-
-
-
-
 	}
 
 	public static void WriteURL(String URL) throws IOException{
@@ -84,7 +74,8 @@ public class WriteIntoFile {
 	}
 	public static void WriteText(String text) throws IOException{
 		try{
-			StringBuffer stb = new StringBuffer("./CrawlOut");
+			System.out.println("WriteTEXT was CALLED!");
+			StringBuffer stb = new StringBuffer("./CrawlOut/text");
 
 			File file = new File(stb.toString());
 			if(!file.exists()){
