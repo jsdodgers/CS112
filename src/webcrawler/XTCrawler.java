@@ -28,9 +28,11 @@ public class XTCrawler extends WebCrawler{
 		return !filters.matcher(href).matches() && href.
 				startsWith("http://www.ics.uci.edu")&&!href.
 				contains("archive.ics.uci.edu")&&!href.
+				contains("calendar.ics.uci.edu")&&!href.
 				contains("sli.ics.uci.edu/classes/2013s-77b?action=download&upname=jester-train.csv")&&!href.
 				contains("http://sli.ics.uci.edu/classes/2013s-77b?action=download&upname=jester-test.csv")&&!href.
-				contains("http://kdd.ics.uci.edu/databases/movies/data/");
+				contains("http://kdd.ics.uci.edu/databases/movies/data/") && !href.
+				contains("?");
 	}
 	
 	@Override
@@ -60,18 +62,18 @@ public class XTCrawler extends WebCrawler{
 		}
 
 		if (page.getParseData() instanceof HtmlParseData) {
-			System.out.println("parsing page!");
+			
 			HtmlParseData parseData = (HtmlParseData) page.getParseData();
 			
 			String text=parseData.getText();
 			String title=parseData.getTitle();
-			ArrayList<WebURL> outgingURLs=(ArrayList<WebURL>) parseData.getOutgoingUrls();
+			ArrayList<WebURL> outgoingURLs = new ArrayList();
+			outgoingURLs.addAll(parseData.getOutgoingUrls());
 			int length=text.length();
 			try{
-				System.out.println("begin try");
 				WriteIntoFile.WriteText("#<start>#"+docID);
 				WriteIntoFile.WriteText("#<url>#"+url);
-				Iterator<WebURL> iter=outgingURLs.iterator();
+				Iterator<WebURL> iter=outgoingURLs.iterator();
 				while(iter.hasNext()){
 					String outgoingURL=iter.next().getURL();
 					WriteIntoFile.WriteText("#<outgoingurls>#"+outgoingURL);
@@ -89,16 +91,14 @@ public class XTCrawler extends WebCrawler{
 				myCrawlStat.setLength(length);
 				myCrawlStat.setMaxLengthURL(url);
 			}
-			List<WebURL> links = (List<WebURL>) parseData.getOutgoingUrls();
+			List<WebURL> links = new ArrayList(); 
+			links.addAll(parseData.getOutgoingUrls());
 			myCrawlStat.incTotalLinks(links.size());
 			try {
 				myCrawlStat.incTotalTextSize(parseData.getText().getBytes("UTF-8").length);
 			} catch (UnsupportedEncodingException ignored) {
 				// Do nothing
 			}
-		}
-		else {
-			System.out.println("wanted to write but wasn't html!");
 		}
 	}
 
