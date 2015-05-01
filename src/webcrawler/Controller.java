@@ -72,7 +72,7 @@ public class Controller {
 	     * want to start a fresh crawl, you need to delete the contents of
 	     * rootFolder manually.
 	     */
-	    config.setResumableCrawling(false);
+	    config.setResumableCrawling(true);
 	    
 	    /*
 	     * User Agent
