@@ -1,26 +1,24 @@
 package webcrawler;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.regex.Pattern;
-import java.util.Set;
+import java.util.Collection;
 import java.util.regex.Pattern;
 
-import org.apache.http.Header;
-import org.apache.poi.util.SystemOutLogger;
-
+import edu.uci.ics.crawler4j.crawler.CrawlConfig;
+import edu.uci.ics.crawler4j.crawler.CrawlController;
 import edu.uci.ics.crawler4j.crawler.Page;
 import edu.uci.ics.crawler4j.crawler.WebCrawler;
+import edu.uci.ics.crawler4j.fetcher.PageFetcher;
 import edu.uci.ics.crawler4j.parser.HtmlParseData;
+import edu.uci.ics.crawler4j.robotstxt.RobotstxtConfig;
+import edu.uci.ics.crawler4j.robotstxt.RobotstxtServer;
 import edu.uci.ics.crawler4j.url.WebURL;
 
 public class Crawler extends WebCrawler{
+	static Collection<String> strings = null;
 	Pattern filters = Pattern.compile(".*(\\.(css|js|bmp|gif|jpe?g" + "|png|tiff?|mid|mp2|mp3|mp4"
-			+ "|wav|avi|mov|mpeg|ram|m4v|pdf" + "|rm|smil|wmv|swf|wma|zip|rar|gz))$");
+			+ "|wav|avi|mov|mpeg|ram|m4v|pdf|ppx?t" + "|rm|smil|wmv|swf|wma|zip|rar|gz))$");
 	
 	@Override
 	public boolean shouldVisit(Page referringPage, WebURL url) {
@@ -33,16 +31,48 @@ public class Crawler extends WebCrawler{
         //return href.contains("ics.uci.edu");
     }
 
+	public static Collection<String> crawl(String seedURL) throws Exception {
+		strings = new ArrayList<String>();
+		String crawlStorageFolder = "./CrawlOut";
+
+		int numberOfCrawlers = 1;
+
+		CrawlConfig config = new CrawlConfig();
+
+		config.setCrawlStorageFolder(crawlStorageFolder);
+
+		config.setMaxDepthOfCrawling(-1);
+
+		config.setMaxPagesToFetch(-1);
+		
+				
+		config.setIncludeBinaryContentInCrawling(false);
+	    
+	    config.setResumableCrawling(false);
+
+	    config.setPolitenessDelay(500);
+
+ 
+	    config.setUserAgentString("UCI Inf141-CS121 crawler 84311865 54689185 38006614");
+
+	
+	    
+	    PageFetcher pageFetcher = new PageFetcher(config);
+		RobotstxtConfig robotstxtConfig = new RobotstxtConfig();
+		RobotstxtServer robotstxtServer = new RobotstxtServer(robotstxtConfig, pageFetcher);
+		CrawlController controller = new CrawlController(config, pageFetcher, robotstxtServer);
+
+		controller.addSeed(seedURL);
+		controller.start(Crawler.class, numberOfCrawlers);
+		return strings;
+	}
+	
 	@Override
 	public void visit(Page page) {
 		System.out.println(Thread.currentThread().getName()+" Visited: " + page.getWebURL().getURL());
 		int docid = page.getWebURL().getDocid();
 	    String url = page.getWebURL().getURL();
-	    String domain = page.getWebURL().getDomain();
-	    String path = page.getWebURL().getPath();
 	    String subDomain = page.getWebURL().getSubDomain();
-	    String parentUrl = page.getWebURL().getParentUrl();
-	    String anchor = page.getWebURL().getAnchor();
 	    	
 
 		try{
@@ -58,20 +88,10 @@ public class Crawler extends WebCrawler{
 			HtmlParseData parseData = (HtmlParseData) page.getParseData();
 			
 			String text=parseData.getText();
-			String title=parseData.getTitle();
-			Set<WebURL> links = parseData.getOutgoingUrls();
+			if (strings!=null) strings.add(text);
 			int length=text.length();
 			try{
-				WriteIntoFile.WriteText("#<start>#"+docid);
-				WriteIntoFile.WriteText("#<url>#"+url);
-				for (WebURL s : links) {
-				    WriteIntoFile.WriteText(s);
-				}
-				WriteIntoFile.WriteText("#<anchor>#"+anchor);
-				WriteIntoFile.WriteText("#<title>#"+title+"\n");
-				WriteIntoFile.WriteText(text);
-				WriteIntoFile.WriteText("#<end>#"+docid+"\n");
-				WriteIntoFile.WriteLength(Integer.toString(length)+"        "+url);
+				WriteIntoFile.WriteLength(Integer.toString(length) + "        " + url);
 				WriteIntoFile.WritePage(Integer.toString(docid), text);
 			}catch(IOException e2){
 				System.out.println("writing file error!");

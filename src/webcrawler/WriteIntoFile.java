@@ -1,9 +1,12 @@
 package webcrawler;
 
+import ir.assignments.two.a.Frequency;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import edu.uci.ics.crawler4j.url.WebURL;
+import java.util.List;
+
 
 
 public class WriteIntoFile {
@@ -73,21 +76,36 @@ public class WriteIntoFile {
 
 		}
 	}
-	public static void WriteText(String text) throws IOException{
+	public static void WriteWordSmith(List<Frequency> frequencies, String longestURL, int longestWords) throws IOException{
 		try{
-			StringBuffer stb = new StringBuffer("./CrawlOut/text");
+			StringBuffer stb = new StringBuffer("./CrawlOut");
 
 			File file = new File(stb.toString());
 			if(!file.exists()){
 				file.mkdirs();
 				System.out.println("new folder created!");
 			}
-			stb.append("/Text.txt");
+			stb.append("/WordSmith.txt");
 			String filePath = stb.toString();
-			FileWriter fileWriter = new FileWriter(filePath, true);
-			fileWriter.write(text);
+			FileWriter fileWriter = new FileWriter(filePath, false);
+			fileWriter.write("Longest Page: " + longestURL + " - " + longestWords + " Words\n\n\n\n");
+			for (Frequency f : frequencies) {
+				fileWriter.write(f.getText() + ":" + f.getFrequency() + "\n");
+			}
+//			fileWriter.write(length);
 			fileWriter.write("\r");
 			fileWriter.close();
+			
+			filePath = "./CrawlOut/CommonWords.txt";
+			fileWriter = new FileWriter(filePath, false);
+			for (int n=0;n<Math.min(500, frequencies.size());n++) {
+				Frequency f = frequencies.get(n);
+				fileWriter.write(f.getText() + ":" + f.getFrequency() + "\n");
+			}
+			fileWriter.write("\r");
+			fileWriter.close();
+			
+			
 
 		}catch(IOException e){
 			System.out.println("writing file error!");
@@ -95,22 +113,24 @@ public class WriteIntoFile {
 
 		}
 	}
-	public static void WriteText(WebURL text) throws IOException{
+	public static void WriteSubdomainFrequencies(List<Frequency> frequencies) throws IOException{
 		try{
-			StringBuffer stb = new StringBuffer("./CrawlOut/text");
+			StringBuffer stb = new StringBuffer("./CrawlOut");
 
 			File file = new File(stb.toString());
 			if(!file.exists()){
 				file.mkdirs();
 				System.out.println("new folder created!");
 			}
-			stb.append("/Text.txt");
+			stb.append("/Subdomains.txt");
 			String filePath = stb.toString();
-			FileWriter fileWriter = new FileWriter(filePath, true);
-			fileWriter.write(text.toString());
+			FileWriter fileWriter = new FileWriter(filePath, false);
+			//for (int n=0;n<Math.min(500, frequencies.size());n++) {
+			for (Frequency f : frequencies) {
+				fileWriter.write(f.getText() + ":" + f.getFrequency() + "\n");
+			}
 			fileWriter.write("\r");
 			fileWriter.close();
-
 		}catch(IOException e){
 			System.out.println("writing file error!");
 			e.printStackTrace();
@@ -130,28 +150,6 @@ public class WriteIntoFile {
 			String filePath = stb.toString();
 			FileWriter fileWriter = new FileWriter(filePath, true);
 			fileWriter.write(length);
-			fileWriter.write("\r");
-			fileWriter.close();
-
-		}catch(IOException e){
-			System.out.println("writing file error!");
-			e.printStackTrace();
-
-		}
-	}
-	public static void WriteResult(String result) throws IOException{
-		try{
-			StringBuffer stb = new StringBuffer("./CrawlOut");
-
-			File file = new File(stb.toString());
-			if(!file.exists()){
-				file.mkdirs();
-				System.out.println("new folder created!");
-			}
-			stb.append("/Result.txt");
-			String filePath = stb.toString();
-			FileWriter fileWriter = new FileWriter(filePath, true);
-			fileWriter.write(result);
 			fileWriter.write("\r");
 			fileWriter.close();
 

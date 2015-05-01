@@ -1,5 +1,9 @@
-Please place your analysis of the runtime complexity of your palindrome algorithm in this file.
+This palindrome algorithm will run in O(n^2) time worst case.
 
-I use dynamic programming solution to solve the problem
-I use P[i,j] to represent a substring which begin at ith and end at jth place in the string. We can regard P[i,j] as a string only in the condition that P[i+1,j-1] is a palindrome and s[i]=s[j]. we have two basic situation, P[i,i] always is a palindrome, P[i,i+1] is Palindrome only in the condition that s[i]=s[i+1]. Suppose the length of the string is N,thus we can compute the time complexity by calculate the sum of N+N-1+N-2+…+1
-So the time complexity is O(N2) and the space complexity is O(N2) since we should maintain a N*N table
+It works by starting from the first word and for every word, it loops an inner loop starting at the last word decrementing to the first word.
+If this ever returns a palindrome, that means it is returning the longest palindrome that begins at the current start word, so that palindrome is added and the outer loop moves to the word after the end of the palindrome.
+If the inner loop gets back to the current word for the outer loop and that word in itself is not a palindrome, the outer loop increments by one and the inner loop starts over from the end.
+
+Because of this, if no palindromes exist or every palindrome is a single word, the algorithm will run in:
+
+O(n + n-1 + n-2 + ... + 2 + 1) = O(n^2).

@@ -1,3 +1,4 @@
+//Justin Saletta 38006614
 package ir.assignments.two.a;
 
 import java.io.File;
@@ -5,7 +6,6 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-import java.util.Iterator;
 
 /**
  * A collection of utility methods for text processing.
@@ -31,47 +31,55 @@ public class Utilities {
 	 * @param input The file to read in and tokenize.
 	 * @return The list of tokens (words) from the input file, ordered by occurrence.
 	 */
+
 	public static ArrayList<String> tokenizeFile(File input) {
-		// TODO Write body!
-		ArrayList<String> s1=new ArrayList<String>();
-		ArrayList<String> s2=new ArrayList<String>();
-		try{
-		Scanner in=new Scanner(input);
-		while(in.hasNext()){
-			s1.add(in.next());
+		ArrayList<String> tokens = new ArrayList<String>();
+		try {
+			Scanner s = new Scanner(input);
+			s.useDelimiter("[^a-zA-Z']+");
+			while (s.hasNext()) {
+				
+				tokens.add(s.next().toLowerCase());
+			}
 		}
-		}catch (FileNotFoundException ex) {
-	        ex.printStackTrace();  
+		catch (FileNotFoundException e) {
+			System.out.println("Not Found!");
 		}
-		int count=0;
-		int size=s1.size();
-	    while(count<size){
-	    	String m=s1.get(count);
-	        int N=m.length();
-	        int end=m.charAt(N-1);
-	        int start=m.charAt(0);
-	        int i=0,j=N-1;
-	        while(!((end>=48&&end<=57)||(end>=65&&end<=90)||(end>=97&&end<=122))){
-	        	j--;
-	        	if(j<0)break;
-	        	end=m.charAt(j);
-	        	}
-	        while(!((start>=48&&start<=57)||(start>=65&&start<=90)||(start>=97&&start<=122))){
-	        	i++;
-	        	if(i>N-1)break;
-	        	start=m.charAt(i);
-	        	}
-	        count++;
-	        if(i<=j){
-	        	m=m.substring(i,j+1);
-	        	String[] aux=m.split("[^A-Za-z0-9]");
-	        	for(int k=0;k<aux.length;++k){
-	        		if(aux[k].length()>0)s2.add(aux[k].toLowerCase());
-	        		}
-	        	
-	        	}
-	        }
-		return s2;
+		return tokens;
+	}
+	public static ArrayList<String> tokenizeFileSubdomain(File input) {
+		ArrayList<String> tokens = new ArrayList<String>();
+		try {
+			Scanner s = new Scanner(input);
+			s.useDelimiter("[^a-zA-Z\\.]+");
+			while (s.hasNext()) {
+				
+				tokens.add(s.next().toLowerCase());
+			}
+		}
+		catch (FileNotFoundException e) {
+			System.out.println("Not Found!");
+		}
+		return tokens;
+	}
+
+	public static boolean isGreater(Frequency fr, Frequency other) {
+		return fr.getFrequency() > other.getFrequency() ||
+				(fr.getFrequency() == other.getFrequency() && fr.getText().compareTo(other.getText()) < 0);
+	}
+
+	public static boolean isGreaterSubdomain(Frequency fr, Frequency other) {
+		return  fr.getText().compareTo(other.getText()) < 0;
+	}
+	
+	public static Frequency getFrequency(List<Frequency> frs, String word) {
+		for (Frequency fr : frs) {
+			if (fr.getText().equals(word)) {
+				frs.remove(fr);
+				return fr;
+			}
+		}
+		return null;
 	}
 	
 	/**
@@ -114,39 +122,25 @@ public class Utilities {
 	 * @param frequencies A list of frequencies.
 	 */
 	public static void printFrequencies(List<Frequency> frequencies) {
+		String gramName = "item";
+	//	if (frequencies.size() > 0) {
+	//		int grams = frequencies.get(0).getText().split(" +").length;
+	//		if (grams > 1) gramName = grams + "-gram";
+	//	}
+		int total = 0;
+		int unique = 0;
+		int longest = 0;
+		for (Frequency fr : frequencies) {
+			total += fr.getFrequency();
+			unique++;
+			longest = Math.max(longest, fr.getText().length() + 4);
+		}
+		System.out.println("Total " + gramName + " count: " + total);
+		System.out.println("Unique " + gramName + " count: " + unique);
+		System.out.println();
+		for (Frequency fr : frequencies) {
+			System.out.println(String.format("%-" + longest + "s%d",fr.getText(),fr.getFrequency()));
+		}
 		// TODO Write body!
-		Iterator<Frequency> iter=frequencies.iterator();
-		int itemcount=0,twogramcount=0,palindromecount=0;
-		while(iter.hasNext()){
-			Frequency f=(Frequency)iter.next();
-			String s=f.getText();
-			int N=s.length();
-			int i=50-N;
-			System.out.printf(s);
-			for(int j=0;j<i;++j){
-				System.out.printf(" ");
-			}
-			if(s.contains(" ")){
-				twogramcount++;
-				palindromecount++;
-			}
-			else if(s!="total"){
-				itemcount++;
-				palindromecount++;
-			}
-			System.out.println(f.getFrequency());
-			}
-		if(itemcount>=0&&twogramcount==0){
-			System.out.println("Total item count: "+frequencies.get(frequencies.size()-1).getFrequency());
-		    System.out.println("Unique item count: "+itemcount);
-		}
-		else if(twogramcount>=0&&itemcount==0){
-			System.out.println("Total two-gram count: "+frequencies.get(frequencies.size()-1).getFrequency());
-		    System.out.println("Unique two-gram count: "+twogramcount);
-		}
-		else{
-			System.out.println("Total palidrome count: "+frequencies.get(frequencies.size()-1).getFrequency());
-			System.out.println("Unique palidrome count: "+palindromecount);
-			}
-		}
 	}
+}
