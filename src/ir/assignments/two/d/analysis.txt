@@ -1,9 +1,0 @@
-This palindrome algorithm will run in O(n^2) time worst case.
-
-It works by starting from the first word and for every word, it loops an inner loop starting at the last word decrementing to the first word.
-If this ever returns a palindrome, that means it is returning the longest palindrome that begins at the current start word, so that palindrome is added and the outer loop moves to the word after the end of the palindrome.
-If the inner loop gets back to the current word for the outer loop and that word in itself is not a palindrome, the outer loop increments by one and the inner loop starts over from the end.
-
-Because of this, if no palindromes exist or every palindrome is a single word, the algorithm will run in:
-
-O(n + n-1 + n-2 + ... + 2 + 1) = O(n^2).

@@ -1,3 +1,8 @@
+// Connor Richards	- 54689185
+// Daniel Yang		- 84311865
+// Justin Saletta	- 38006614
+
+
 package webcrawler;
 
 import ir.assignments.two.a.Frequency;
@@ -10,7 +15,7 @@ import java.util.List;
 
 
 public class WriteIntoFile {
-	public static void WritePage(String id, String content) throws IOException{
+	public static void WritePage(String id, String content, String URL) throws IOException{
 		try{
 			StringBuffer stb = new StringBuffer("./CrawlOut/Pages");
 
@@ -25,6 +30,21 @@ public class WriteIntoFile {
 			fileWriter.write(content);
 			fileWriter.write("\r");
 			fileWriter.close();
+			
+			stb = new StringBuffer("./CrawlOut/PagesURL");
+
+			file = new File(stb.toString());
+			if(!file.exists()){
+				file.mkdirs();
+				System.out.println("new folder created!");
+			}
+			stb.append("/"+id+".txt");
+			filePath = stb.toString();
+			fileWriter = new FileWriter(filePath, true);
+			fileWriter.write(URL);
+			fileWriter.write("\r");
+			fileWriter.close();
+			
 
 		}catch(IOException e){
 			System.out.println("writing file error!");
@@ -127,7 +147,7 @@ public class WriteIntoFile {
 			FileWriter fileWriter = new FileWriter(filePath, false);
 			//for (int n=0;n<Math.min(500, frequencies.size());n++) {
 			for (Frequency f : frequencies) {
-				fileWriter.write(f.getText() + ":" + f.getFrequency() + "\n");
+				fileWriter.write(f.getText() + ", " + f.getFrequency() + "\n");
 			}
 			fileWriter.write("\r");
 			fileWriter.close();

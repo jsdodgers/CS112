@@ -1,3 +1,7 @@
+// Justin Saletta	- 38006614
+// Connor Richards	- 54689185
+// Daniel Yang		- 84311865
+
 package webcrawler;
 
 import java.io.IOException;
@@ -17,8 +21,7 @@ import edu.uci.ics.crawler4j.url.WebURL;
 
 public class Crawler extends WebCrawler{
 	static Collection<String> strings = null;
-	Pattern filters = Pattern.compile(".*(\\.(css|js|bmp|gif|jpe?g" + "|png|tiff?|mid|mp2|mp3|mp4"
-			+ "|wav|avi|mov|mpeg|ram|m4v|pdf|ppx?t" + "|rm|smil|wmv|swf|wma|zip|rar|gz))$");
+	Pattern filters = Pattern.compile(".*(\\.(css|js|bmp|gif|jpe?g|png|tiff?|mid|mp2|mp3|mp4|wav|avi|mov|mpeg|ram|m4v|pdf|ppx?t|rm|smil|wmv|swf|wma|zip|rar|gz))$");
 	
 	@Override
 	public boolean shouldVisit(Page referringPage, WebURL url) {
@@ -75,13 +78,6 @@ public class Crawler extends WebCrawler{
 	    String subDomain = page.getWebURL().getSubDomain();
 	    	
 
-		try{
-			WriteIntoFile.WriteURL(""+url);
-			WriteIntoFile.WriteSubdomain(""+subDomain);
-		}catch(IOException e1){
-			System.out.println("writing file error!");
-			e1.printStackTrace();
-		}
 
 		if (page.getParseData() instanceof HtmlParseData) {
 			
@@ -91,8 +87,10 @@ public class Crawler extends WebCrawler{
 			if (strings!=null) strings.add(text);
 			int length=text.length();
 			try{
+				WriteIntoFile.WriteURL(""+url);
+				WriteIntoFile.WriteSubdomain(""+subDomain);
 				WriteIntoFile.WriteLength(Integer.toString(length) + "        " + url);
-				WriteIntoFile.WritePage(Integer.toString(docid), text);
+				WriteIntoFile.WritePage(Integer.toString(docid), text, url);
 			}catch(IOException e2){
 				System.out.println("writing file error!");
 				e2.printStackTrace();

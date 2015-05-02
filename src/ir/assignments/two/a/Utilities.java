@@ -1,4 +1,8 @@
-//Justin Saletta 38006614
+// Justin Saletta	- 38006614
+// Daniel Yang		- 84311865
+// Connor Richards	- 54689185
+
+
 package ir.assignments.two.a;
 
 import java.io.File;
@@ -51,10 +55,9 @@ public class Utilities {
 		ArrayList<String> tokens = new ArrayList<String>();
 		try {
 			Scanner s = new Scanner(input);
-			s.useDelimiter("[^a-zA-Z\\.]+");
-			while (s.hasNext()) {
+			while (s.hasNextLine()) {
 				
-				tokens.add(s.next().toLowerCase());
+				tokens.add(s.nextLine());
 			}
 		}
 		catch (FileNotFoundException e) {

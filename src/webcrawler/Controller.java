@@ -1,6 +1,7 @@
-/**
- * 
- */
+// Justin Saletta	- 38006614
+// Daniel Yang		- 84311865
+// Connor Richards	- 54689185
+
 package webcrawler;
 
 import java.util.List;

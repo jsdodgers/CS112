@@ -1,3 +1,7 @@
+// Connor Richards	- 54689185
+// Justin Saletta	- 38006614
+// Daniel Yang		- 84311865
+
 package webcrawler;
 
 import ir.assignments.two.a.Frequency;
@@ -17,8 +21,8 @@ import java.util.Scanner;
 public class CrawlerWordSmith {
 
 	public static void main(String[] args) throws FileNotFoundException {
-		checkFrequencyOfWords();
 		checkFrequencyOfSubdomains();
+		checkFrequencyOfWords();
 	}
 	
 	public static void checkFrequencyOfWords() throws FileNotFoundException {
@@ -38,9 +42,9 @@ public class CrawlerWordSmith {
 			System.out.println(i + " " + current + "   " + s + " - " + frequencies.get(0).getText() + " : " + frequencies.get(0).getFrequency());
 			if (words.size() > longest) {
 				longest = words.size();
-				url = current;
+				url = current + "  _-_  " + s;
 			}
-			if (i > 20) break;
+		//	if (i > 20) break;
 		}
 		try {
 			WriteIntoFile.WriteWordSmith(frequencies, url, longest);

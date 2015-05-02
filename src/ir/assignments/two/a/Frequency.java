@@ -1,5 +1,10 @@
-//Justin Saletta 38006614
+// Daniel Yang		- 84311865
+// Justin Saletta	- 38006614
+// Connor Richards	- 54689185
+
+
 package ir.assignments.two.a;
+
 
 /**
  * Basic class for pairing a word/2-gram/palindrome with its frequency.
