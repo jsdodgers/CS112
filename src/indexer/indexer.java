@@ -65,8 +65,14 @@ public class indexer {
 			HashMap<Integer,List<Integer>> docid2termlist = new HashMap<Integer,List<Integer>>();
 			int count = 0;
 			int docIndex = 0;
+			int iii = 0;
 			for (String s : files) {
-				Object obj = parser.parse(new FileReader(folderPath + "/" + s));
+				long end=System.currentTimeMillis();
+				long runningTime=(end-start);
+				if (iii % 1000 == 0) System.out.println(iii + "  --  " + term2termid.size() + "  --  " + runningTime + "ms (" + (runningTime/1000) + "s)");
+				iii++;
+				FileReader fr = new FileReader(folderPath + "/" + s);
+				Object obj = parser.parse(fr);
 				JSONObject jsonObject = (JSONObject)obj;
 				String text = ((String)jsonObject.get("text")).toLowerCase();
 				String[] words = text.split(" (|a|about|above|after|again|against|all|am|an|and|any|are|arent|as|at|be|because|been|before|being|below|between|both|but|by|cant|cannot|could|couldnt|did|didnt|do|does|doesnt|doing|dont|down|during|each|few|for|from|further|had|hadnt|has|hasnt|have|havent|having|he|hed|hell|hes|her|here|heres|hers|herself|him|himself|his|how|hows|i|im|ive|if|in|into|is|isnt|it|its|its|itself|lets|me|more|most|mustnt|my|myself|no|nor|not|of|off|on|once|only|or|other|ought|our|ours|ourselves|out|over|own|same|shant|she|shed|shell|shes|should|shouldnt|so|some|such|than|that|thats|the|their|theirs|them|themselves|then|there|theres|these|they|theyd|theyll|theyre|theyve|this|those|through|to|too|under|until|up|very|was|wasnt|we|wed|well|were|weve|were|werent|what|whats|when|whens|where|wheres|which|while|who|whos|whom|why|whys|with|wont|would|wouldnt|you|youd|youll|youre|youve|your|yours|yourself|yourselves) | ");
@@ -88,8 +94,10 @@ public class indexer {
 					termlist.add(i);
 				}
 				docid2termlist.put(docIndex++, termlist);
+				fr.close();
 			}
 			int[] docFrequenciesMax = new int[docid2termlist.size()];
+			System.out.println("\nDoc Frequencies Max\n");
 			for (Integer docid : docid2termlist.keySet()) {
 				List<Integer> termlist = docid2termlist.get(docid);
 				docFrequenciesMax[docid] = computeTermFrequenciesMax(termlist, null);
@@ -101,6 +109,10 @@ public class indexer {
 			HashMap<Integer,HashMap<Integer,Double>> index = new HashMap<Integer,HashMap<Integer,Double>>();
 			double docCount = files.size();
 			for (int n=0;n<termid2term.length;n++) {
+				long end=System.currentTimeMillis();
+				long runningTime=(end-start);
+				if (n % 500 == 0) System.out.println(n + "/" + termid2term.length + "  --  " + runningTime + "ms (" + (runningTime/1000) + "s)");
+				
 				HashMap<Integer,Double> tfidfmap = new HashMap<Integer,Double>();
 				double docWith = 0;
 				for (List<Integer> termlist : docid2termlist.values()) {
@@ -145,7 +157,8 @@ public class indexer {
 //			System.out.println("\n\n\n\n\n\n\n");
 //			System.out.println(indexJSON);
 			FileWriter file = new FileWriter("./index.txt");
-			file.write(indexJSON.toJSONString());
+		//	file.write(indexJSON.toJSONString());
+			indexJSON.writeJSONString(file);
 			file.flush();
 			file.close();
 			
