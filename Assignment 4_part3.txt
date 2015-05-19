@@ -1,0 +1,15 @@
+3. termID -> docID, tf-idf	//our index: give the tf-idf of a term in a given document
+	Ex. 
+	0:{"2":0.27245874297144357}
+
+   termID -> term		//give an ID to each term
+	Ex. 
+	277:"Krakow"
+
+   docID -> document		//give an ID to each document
+	Ex. 
+	1:"1.txt"
+
+   docID -> term list		//list all terms that show up in each document
+	Ex. 
+	27:[1563,36,1399,367,1482,1564,843]
