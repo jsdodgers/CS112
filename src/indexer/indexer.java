@@ -1,3 +1,7 @@
+// Daniel Yang		- 84311865
+// Justin Saletta	- 38006614
+// Connor Richards	- 54689185
+
 package indexer;
 
 import ir.assignments.two.a.Frequency;
